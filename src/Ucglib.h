@@ -361,6 +361,7 @@ class Ucglib_ILI9486_18x320x480_SWSPI : public Ucglib4WireSWSPI
     { }
 };
 
+
 class Ucglib_ILI9163_18x128x128_HWSPI : public Ucglib4WireHWSPI
 {
   public:

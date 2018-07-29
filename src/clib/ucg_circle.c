@@ -41,71 +41,68 @@ static void ucg_draw_circle_section(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_in
 
 static void ucg_draw_circle_section(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t x0, ucg_int_t y0, uint8_t option)
 {
-  /* upper right */
-  if (option & UCG_DRAW_UPPER_RIGHT)
-  {
-    ucg_DrawPixel(ucg, x0 + x, y0 - y);
-    ucg_DrawPixel(ucg, x0 + y, y0 - x);
-  }
-
-  /* upper left */
-  if (option & UCG_DRAW_UPPER_LEFT)
-  {
-    ucg_DrawPixel(ucg, x0 - x, y0 - y);
-    ucg_DrawPixel(ucg, x0 - y, y0 - x);
-  }
-
-  /* lower right */
-  if (option & UCG_DRAW_LOWER_RIGHT)
-  {
-    ucg_DrawPixel(ucg, x0 + x, y0 + y);
-    ucg_DrawPixel(ucg, x0 + y, y0 + x);
-  }
-
-  /* lower left */
-  if (option & UCG_DRAW_LOWER_LEFT)
-  {
-    ucg_DrawPixel(ucg, x0 - x, y0 + y);
-    ucg_DrawPixel(ucg, x0 - y, y0 + x);
-  }
+    /* upper right */
+    if ( option & UCG_DRAW_UPPER_RIGHT )
+    {
+      ucg_DrawPixel(ucg, x0 + x, y0 - y);
+      ucg_DrawPixel(ucg, x0 + y, y0 - x);
+    }
+    
+    /* upper left */
+    if ( option & UCG_DRAW_UPPER_LEFT )
+    {
+      ucg_DrawPixel(ucg, x0 - x, y0 - y);
+      ucg_DrawPixel(ucg, x0 - y, y0 - x);
+    }
+    
+    /* lower right */
+    if ( option & UCG_DRAW_LOWER_RIGHT )
+    {
+      ucg_DrawPixel(ucg, x0 + x, y0 + y);
+      ucg_DrawPixel(ucg, x0 + y, y0 + x);
+    }
+    
+    /* lower left */
+    if ( option & UCG_DRAW_LOWER_LEFT )
+    {
+      ucg_DrawPixel(ucg, x0 - x, y0 + y);
+      ucg_DrawPixel(ucg, x0 - y, y0 + x);
+    }
 }
 
 void ucg_draw_circle(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8_t option)
 {
-  ucg_int_t f;
-  ucg_int_t ddF_x;
-  ucg_int_t ddF_y;
-  ucg_int_t x;
-  ucg_int_t y;
+    ucg_int_t f;
+    ucg_int_t ddF_x;
+    ucg_int_t ddF_y;
+    ucg_int_t x;
+    ucg_int_t y;
 
-  f = 1;
-  f -= rad;
-  ddF_x = 1;
-  ddF_y = 0;
-  ddF_y -= rad;
-  ddF_y *= 2;
-  x = 0;
-  y = rad;
-
-  ucg_draw_circle_section(ucg, x, y, x0, y0, option);
-
-  while (x < y)
-  {
-    if (f >= 0)
-    {
-      y--;
-      ddF_y += 2;
-      f += ddF_y;
-    }
-    x++;
-    ddF_x += 2;
-    f += ddF_x;
+    f = 1;
+    f -= rad;
+    ddF_x = 1;
+    ddF_y = 0;
+    ddF_y -= rad;
+    ddF_y *= 2;
+    x = 0;
+    y = rad;
 
     ucg_draw_circle_section(ucg, x, y, x0, y0, option);
-#ifdef ESP8266
-    yield(); // avoid block process
-#endif
-  }
+    
+    while ( x < y )
+    {
+      if (f >= 0) 
+      {
+        y--;
+        ddF_y += 2;
+        f += ddF_y;
+      }
+      x++;
+      ddF_x += 2;
+      f += ddF_x;
+
+      ucg_draw_circle_section(ucg, x, y, x0, y0, option);    
+    }
 }
 
 void ucg_DrawCircle(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8_t option)
@@ -124,7 +121,7 @@ void ucg_DrawCircle(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8
       return;    
   }
   */
-
+  
   /* draw circle */
   ucg_draw_circle(ucg, x0, y0, rad, option);
 }
@@ -133,33 +130,33 @@ static void ucg_draw_disc_section(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_
 
 static void ucg_draw_disc_section(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t x0, ucg_int_t y0, uint8_t option)
 {
-  /* upper right */
-  if (option & UCG_DRAW_UPPER_RIGHT)
-  {
-    ucg_DrawVLine(ucg, x0 + x, y0 - y, y + 1);
-    ucg_DrawVLine(ucg, x0 + y, y0 - x, x + 1);
-  }
-
-  /* upper left */
-  if (option & UCG_DRAW_UPPER_LEFT)
-  {
-    ucg_DrawVLine(ucg, x0 - x, y0 - y, y + 1);
-    ucg_DrawVLine(ucg, x0 - y, y0 - x, x + 1);
-  }
-
-  /* lower right */
-  if (option & UCG_DRAW_LOWER_RIGHT)
-  {
-    ucg_DrawVLine(ucg, x0 + x, y0, y + 1);
-    ucg_DrawVLine(ucg, x0 + y, y0, x + 1);
-  }
-
-  /* lower left */
-  if (option & UCG_DRAW_LOWER_LEFT)
-  {
-    ucg_DrawVLine(ucg, x0 - x, y0, y + 1);
-    ucg_DrawVLine(ucg, x0 - y, y0, x + 1);
-  }
+    /* upper right */
+    if ( option & UCG_DRAW_UPPER_RIGHT )
+    {
+      ucg_DrawVLine(ucg, x0+x, y0-y, y+1);
+      ucg_DrawVLine(ucg, x0+y, y0-x, x+1);
+    }
+    
+    /* upper left */
+    if ( option & UCG_DRAW_UPPER_LEFT )
+    {
+      ucg_DrawVLine(ucg, x0-x, y0-y, y+1);
+      ucg_DrawVLine(ucg, x0-y, y0-x, x+1);
+    }
+    
+    /* lower right */
+    if ( option & UCG_DRAW_LOWER_RIGHT )
+    {
+      ucg_DrawVLine(ucg, x0+x, y0, y+1);
+      ucg_DrawVLine(ucg, x0+y, y0, x+1);
+    }
+    
+    /* lower left */
+    if ( option & UCG_DRAW_LOWER_LEFT )
+    {
+      ucg_DrawVLine(ucg, x0-x, y0, y+1);
+      ucg_DrawVLine(ucg, x0-y, y0, x+1);
+    }
 }
 
 void ucg_draw_disc(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8_t option)
@@ -180,10 +177,10 @@ void ucg_draw_disc(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8_
   y = rad;
 
   ucg_draw_disc_section(ucg, x, y, x0, y0, option);
-
-  while (x < y)
+  
+  while ( x < y )
   {
-    if (f >= 0)
+    if (f >= 0) 
     {
       y--;
       ddF_y += 2;
@@ -193,10 +190,7 @@ void ucg_draw_disc(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8_
     ddF_x += 2;
     f += ddF_x;
 
-    ucg_draw_disc_section(ucg, x, y, x0, y0, option);
-#ifdef ESP8266
-    yield(); // avoid block process
-#endif
+    ucg_draw_disc_section(ucg, x, y, x0, y0, option);    
   }
 }
 
@@ -216,7 +210,8 @@ void ucg_DrawDisc(ucg_t *ucg, ucg_int_t x0, ucg_int_t y0, ucg_int_t rad, uint8_t
       return;    
   }
   */
-
+  
   /* draw disc */
   ucg_draw_disc(ucg, x0, y0, rad, option);
 }
+
